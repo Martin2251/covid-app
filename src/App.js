@@ -1,27 +1,56 @@
 import React, { useEffect, useState } from "react";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Graph from "./pages/Graph";
-import Nav from "./Nav";
-import Footer from "./Footer";
-import Symptom from "./pages/Symptom";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Card from "react-bootstrap/Card";
+import CardDeck from "react-bootstrap/CardDeck";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from "axios;"
 
 function App() {
+  const [latest, setLatest] = useState("");
+  useEffect(() => {
+    axios
+      .get("https://corona.lmao.ninja/v2/all")
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err =>{
+        console.log(err);
+      });
+  }, []);
+
+
   return (
-    <Router>
-      <div>
-        <Nav />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/symptom" component={Symptom} />
-          <Route path="/graph" component={Graph} />
-          <Route path="/about" component={About} />
-        </Switch>
-        <Footer />
-      </div>
-    </Router>
-  );
+  <div>
+  <CardDeck>
+  <Card bg="secondary" text="white" className="text-center" style={{margin: "10px"}}>
+    <Card.Body>
+      <Card.Title>Cases</Card.Title>
+      <Card.Text>100</Card.Text>
+    </Card.Body>
+    <Card.Footer>
+      <small>Last updated 3 mins ago</small>
+    </Card.Footer>
+  </Card>
+  <Card bg="danger" text={"white"} className="text-center" style={{margin: "10px"}}>
+    <Card.Body>
+      <Card.Title>Deaths</Card.Title>
+      <Card.Text>0</Card.Text>
+    </Card.Body>
+    <Card.Footer>
+      <small>Last updated 3 mins ago</small>
+    </Card.Footer>
+  </Card>
+  <Card bg="success" text={"white"} className="text-center" style={{margin: "10px"}}>
+    <Card.Body>
+      <Card.Title>Recovered</Card.Title>
+      <Card.Text>99</Card.Text>
+    </Card.Body>
+    <Card.Footer>
+      <small>Last updated 3 mins ago</small>
+    </Card.Footer>
+  </Card>
+</CardDeck>
+</div>
+);
 }
 
 export default App;
